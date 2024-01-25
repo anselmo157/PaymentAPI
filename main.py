@@ -43,5 +43,5 @@ def payment(amount, token, description, payment_method_id, installments, email):
             print(key + ' : ' + str(payment_found['response'][key]))
 
 
-token = getToken("4235647728025682", "123", "11", "2025", "Lucas Firmiano", "19119119100")
-payment(100, token, "Assinatura do aplicativo ViaJus", "visa", 5, "anselmoparente@gmail.com")
+generated_Token = getToken("4235647728025682", "123", "11", "2025", "Lucas Firmiano", "19119119100")
+payment(100, generated_Token, "Assinatura do aplicativo ViaJus", "visa", 5, "anselmoparente@gmail.com")
