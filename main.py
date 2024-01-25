@@ -1,36 +1,44 @@
 import mercadopago
-from datetime import datetime
 
 sdk = mercadopago.SDK("TEST-2145212492623165-011911-c743112a41ebb1f41c9dc48330effff8-99549809")
 
-card_token_object = {
-            "card_number": "4235647728025682",
-            "security_code": "123",
-            "expiration_year": "2025",
-            "expiration_month": "11",
-            "cardholder": {
-                "name": "APRO",
-                "identification": {
-                    "CPF": "19119119100"
-                }
+
+def getToken(card_number, security_code, expiration_month, expiration_year, name, cpf):
+    card_token_object = {
+        "card_number": card_number,
+        "security_code": security_code,
+        "expiration_month": expiration_month,
+        "expiration_year": expiration_year,
+        "cardholder": {
+            "name": name,
+            "identification": {
+                "CPF": cpf
             }
         }
-
-card_token_created = sdk.card_token().create(card_token_object)
-
-payment_data = {
-    "transaction_amount": 100,
-    "token": card_token_created["response"]["id"],
-    "description": "Assinatura do aplicativo ViaJus",
-    "payment_method_id": 'visa',
-    "installments": 1,
-    "payer": {
-        "email": 'anselmoparente@gmail.com',
     }
-}
-result = sdk.payment().create(payment_data)
-payment = result["response"]
 
-payment_found = sdk.payment().get(payment["id"])
+    card_token_created = sdk.card_token().create(card_token_object)
 
-print(payment_found)
+    return card_token_created['response']['id']
+
+
+def payment(amount, token, description, payment_method_id, installments, email):
+    payment_data = {
+        "transaction_amount": amount,
+        "token": token,
+        "description": description,
+        "payment_method_id": payment_method_id,
+        "installments": installments,
+        "payer": {
+            "email": email,
+        }
+    }
+    result = sdk.payment().create(payment_data)
+    payment_request = result["response"]["id"]
+    payment_found = sdk.payment().get(payment_request)
+
+    print(payment_found)
+
+
+token = getToken("4235647728025682", "123", "11", "2025", "Lucas Firmiano", "19119119100")
+payment(100, token, "Assinatura do aplicativo ViaJus", "visa", 5, "anselmoparente@gmail.com")
