@@ -38,6 +38,9 @@ def payment(amount, token, description, payment_method_id, installments, email):
     payment_found = sdk.payment().get(payment_request)
 
     print(payment_found)
+    for key in payment_found['response'].keys():
+        if payment_found['response'][key] is not None:
+            print(key + ' : ' + str(payment_found['response'][key]))
 
 
 token = getToken("4235647728025682", "123", "11", "2025", "Lucas Firmiano", "19119119100")
