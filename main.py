@@ -1,4 +1,7 @@
 import mercadopago
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
 
 sdk = mercadopago.SDK("TEST-2145212492623165-011911-c743112a41ebb1f41c9dc48330effff8-99549809")
 
@@ -22,11 +25,11 @@ def getToken(card_number, security_code, expiration_month, expiration_year, name
     return card_token_created['response']['id']
 
 
-def payment(amount, token, description, payment_method_id, installments, email):
+def paymentSend(amount, token, payment_method_id, installments, email):
     payment_data = {
         "transaction_amount": amount,
         "token": token,
-        "description": description,
+        "description": "Assinatura do aplicativo ViaJus",
         "payment_method_id": payment_method_id,
         "installments": installments,
         "payer": {
@@ -43,5 +46,15 @@ def payment(amount, token, description, payment_method_id, installments, email):
             print(key + ' : ' + str(payment_found['response'][key]))
 
 
-generated_Token = getToken("4235647728025682", "123", "11", "2025", "Lucas Firmiano", "19119119100")
-payment(100, generated_Token, "Assinatura do aplicativo ViaJus", "visa", 5, "anselmoparente@gmail.com")
+@app.route('/payment', methods=['POST'])
+def payment():
+    # generated_Token = getToken("4235647728025682", "123", "11", "2025", "Lucas Firmiano", "19119119100")
+    # paymentSend(100, generated_Token, "visa", 5, "anselmoparente@gmail.com")
+    data = request.get_json()
+    print(data)
+    return {
+        'deu bom': True
+    }
+
+
+app.run(port=5000, host='localhost', debug=True)
