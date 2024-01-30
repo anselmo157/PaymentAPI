@@ -48,10 +48,12 @@ def paymentSend(amount, token, payment_method_id, installments, email):
 
 @app.route('/payment', methods=['POST'])
 def payment():
-    # generated_Token = getToken("4235647728025682", "123", "11", "2025", "Lucas Firmiano", "19119119100")
-    # paymentSend(100, generated_Token, "visa", 5, "anselmoparente@gmail.com")
+
+
     data = request.get_json()
-    print(data)
+    generated_Token = getToken(data['card_number'], data['security_code'], data['expiration_month'],
+                               data['expiration_year'], data['name'], data['cpf'])
+    paymentSend(data['amount'], generated_Token, "visa", data['installments'], data['email'])
     return {
         'deu bom': True
     }
