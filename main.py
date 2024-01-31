@@ -41,22 +41,18 @@ def paymentSend(amount, token, payment_method_id, installments, email):
     payment_found = sdk.payment().get(payment_request)
 
     print(payment_found)
-    for key in payment_found['response'].keys():
-        if payment_found['response'][key] is not None:
-            print(key + ' : ' + str(payment_found['response'][key]))
+
+    return payment_found
 
 
 @app.route('/payment', methods=['POST'])
 def payment():
-
-
     data = request.get_json()
     generated_Token = getToken(data['card_number'], data['security_code'], data['expiration_month'],
                                data['expiration_year'], data['name'], data['cpf'])
-    paymentSend(data['amount'], generated_Token, "visa", data['installments'], data['email'])
-    return {
-        'deu bom': True
-    }
+    response = paymentSend(data['amount'], generated_Token, "visa", data['installments'], data['email'])
+
+    return response
 
 
 app.run(port=5000, host='localhost', debug=True)
