@@ -42,16 +42,18 @@ def paymentSend(amount, token, payment_method_id, installments, email):
         "notification_url": "https://meuservidor.com/webhook",
         "statement_descriptor": "Assinatura Via.Jus",
         "additional_info": {
-            "items": [{
-                "id": 1,
-                "category_id": "subscription",
-                "title": "Assinatura",
-                "description": "Assinatura para utilização de uma conta de advogado no aplicativo do Via.Jus",
-                "type": "subscription",
-                "quantity": 1,
-                "unit_price": amount,
-                "warranty": False,
-            }]
+            "items": [
+                {
+                    "id": 1,
+                    "category_id": "subscription",
+                    "title": "Assinatura",
+                    "description": "Assinatura para utilização de uma conta de advogado no aplicativo do Via.Jus",
+                    "type": "subscription",
+                    "quantity": 1,
+                    "unit_price": amount,
+                    "warranty": False,
+                }
+            ]
         },
     }
 
