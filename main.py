@@ -3,7 +3,7 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-sdk = mercadopago.SDK("TEST-2145212492623165-011911-c743112a41ebb1f41c9dc48330effff8-99549809")
+sdk = mercadopago.SDK("APP_USR-2145212492623165-011911-5c43c65057abe353c7180187b1ac5867-99549809")
 
 
 def getToken(card_number, security_code, expiration_month, expiration_year, name, cpf):
@@ -32,15 +32,29 @@ def paymentSend(amount, token, payment_method_id, installments, email):
     payment_data = {
         "transaction_amount": amount,
         "token": token,
-        "description": "Assinatura do aplicativo ViaJus",
         "payment_method_id": payment_method_id,
         "installments": installments,
+        "description": "Assinatura do aplicativo Via.Jus",
         "payer": {
             "email": email,
-        }
+        },
+        "external_reference": "MP0001",
+        "notification_url": "https://meuservidor.com/webhook",
+        "statement_descriptor": "Assinatura Via.Jus",
+        "additional_info": {
+            "items": [{
+                "id": 1,
+                "category_id": "subscription",
+                "title": "Assinatura",
+                "description": "Assinatura para utilização de uma conta de advogado no aplicativo do Via.Jus",
+                "type": "subscription",
+                "quantity": 1,
+                "unit_price": amount,
+                "warranty": False,
+            }]
+        },
     }
 
-    print(payment_data)
     result = sdk.payment().create(payment_data)
     print(result)
     payment_request = result["response"]["id"]
